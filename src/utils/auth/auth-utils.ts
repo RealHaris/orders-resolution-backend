@@ -36,7 +36,11 @@ export function requestIdMiddleware(
  */
 export const accessTokenVerification = async (req: Request, res: Response) => {
   try {
-    const accessToken = req.cookies.accessToken;
+    const authHeader = req.headers.authorization;
+    const bearerToken = authHeader?.startsWith("Bearer ")
+      ? authHeader.substring(7)
+      : undefined;
+    const accessToken = req.cookies.accessToken || bearerToken;
     if (!accessToken) throw new Error("Unauthorized");
 
     try {

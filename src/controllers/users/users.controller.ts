@@ -48,7 +48,11 @@ class UsersController {
       createAccessTokenCookie(res, result.accessToken);
       return res.status(201).json({
         success: true,
-        data: { user: result.user },
+        data: {
+          user: result.user,
+          token: result.accessToken,
+          accessToken: result.accessToken,
+        },
       });
     } catch (error) {
       next(error);
@@ -69,7 +73,11 @@ class UsersController {
       createAccessTokenCookie(res, result.accessToken);
       return res.json({
         success: true,
-        data: { user: result.user },
+        data: {
+          user: result.user,
+          token: result.accessToken,
+          accessToken: result.accessToken,
+        },
       });
     } catch (error) {
       next(error);
