@@ -60,7 +60,7 @@ Copy from `.env.example`. The browser sends the `accessToken` cookie with `crede
 ### 1. Backend
 
 ```bash
-cd orders-be/my-backend
+cd orders-resolution
 cp .env.example .env
 ```
 
@@ -78,7 +78,7 @@ Other scripts: `npm test`, `npm run ci` (Biome + `tsc --noEmit` + Vitest), `npm 
 ### 2. Frontend (optional)
 
 ```bash
-cd orders-fe/my-frontend
+cdorders-resolutions
 ```
 
 Create `.env.local` with `NEXT_PUBLIC_API_HOST` (see [Environment variables](#environment-variables)).
@@ -235,7 +235,7 @@ Frontend: https://my-frontend-flax.vercel.app
 Backend API: https://orders-resolution-backend.onrender.com
 Health: https://orders-resolution-backend.onrender.com/api/health
 
-Repo: orders-be/my-backend (API) and orders-fe/my-frontend (dashboard).
+Repo:orders-resolution (API) andorders-resolutions (dashboard).
 README covers setup, endpoints, status rules, concurrency (atomic $expr, no distributed lock), tradeoffs, and production follow-ups.
 
 Contact: hariskhan.mywork@gmail.com

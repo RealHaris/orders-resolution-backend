@@ -25,5 +25,5 @@ Must follow these rules and project standards:
 
 Implement exactly:
 
-- orders-resolution backend patterns (layering, ErrorData, cookie JWT, pagination)
+- backend patterns (layering, ErrorData, cookie JWT, pagination)
 - Orders & Settlements API spec (endpoints, concurrency, status derivation)

@@ -24,7 +24,7 @@ export const ORDER_CONSTANTS = {
 } as const;
 
 /**
- * Stable CSV field ids and orders-resolution-style header labels.
+ * Stable CSV field ids and style header labels.
  */
 export const ORDER_EXPORT_FIELD_HEADERS: Record<string, string> = {
   id: "Order ID",
