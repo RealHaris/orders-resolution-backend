@@ -50,7 +50,6 @@ class UsersController {
         success: true,
         data: {
           user: result.user,
-          token: result.accessToken,
           accessToken: result.accessToken,
         },
       });
@@ -75,7 +74,6 @@ class UsersController {
         success: true,
         data: {
           user: result.user,
-          token: result.accessToken,
           accessToken: result.accessToken,
         },
       });
