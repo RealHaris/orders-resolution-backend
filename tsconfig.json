@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "./.tsbuildinfo",
+    "target": "ES6",
+    "module": "node16",
+    "moduleResolution": "node16",
+    "rootDir": "./src",
+    "paths": {
+      "@/config/*": ["./src/config/*"],
+      "@/constants/*": ["./src/constants/*"],
+      "@/controllers/*": ["./src/controllers/*"],
+      "@/data/*": ["./src/data/*"],
+      "@/middlewares/*": ["./src/middlewares/*"],
+      "@/models/*": ["./src/models/*"],
+      "@/repositories/*": ["./src/repositories/*"],
+      "@/routes/*": ["./src/routes/*"],
+      "@/services/*": ["./src/services/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/utils/*": ["./src/utils/*"]
+    },
+    "types": ["./src/@types/express.d.ts"],
+    "sourceMap": true,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": false,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.test.ts"]
+}
