@@ -14,10 +14,45 @@ const lineItemSchema = new Schema(
 
 const paymentSchema = new Schema(
   {
+    kind: {
+      type: String,
+      enum: ["payment", "refund"],
+      required: true,
+      default: "payment",
+    },
     amountCents: { type: Number, required: true, min: 1 },
     date: { type: Date, required: true },
     note: { type: String, trim: true },
     idempotencyKey: { type: String },
+    createdAt: { type: Date, required: true },
+  },
+  { _id: true }
+);
+
+const auditEventSchema = new Schema(
+  {
+    action: {
+      type: String,
+      enum: [
+        "order.created",
+        "order.updated",
+        "payment.recorded",
+        "refund.recorded",
+      ],
+      required: true,
+    },
+    fromStatus: {
+      type: String,
+      enum: ["pending", "partially_paid", "paid", "overdue"],
+    },
+    toStatus: {
+      type: String,
+      enum: ["pending", "partially_paid", "paid", "overdue"],
+      required: true,
+    },
+    actorUserId: { type: Schema.Types.ObjectId, required: true },
+    note: { type: String, trim: true },
+    metadata: { type: Schema.Types.Mixed },
     createdAt: { type: Date, required: true },
   },
   { _id: true }
@@ -43,6 +78,7 @@ const orderSchema = new Schema(
       default: "pending",
     },
     payments: { type: [paymentSchema], default: [] },
+    auditLog: { type: [auditEventSchema], default: [] },
   },
   { timestamps: true }
 );

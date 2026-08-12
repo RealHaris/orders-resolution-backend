@@ -46,6 +46,9 @@ export const dynamicRateLimitMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
+  if (process.env.NODE_ENV === "test") {
+    return next();
+  }
   try {
     const key = getRateLimitKey(req);
 

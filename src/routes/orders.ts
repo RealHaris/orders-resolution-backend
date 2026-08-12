@@ -4,6 +4,8 @@ import {
   orderController,
   validateCreateOrder,
   validateCreatePayment,
+  validateCreateRefund,
+  validateExportOrders,
   validateListOrders,
   validateOrderId,
   validateUpdateOrder,
@@ -39,6 +41,13 @@ router.get(
   orderController.summary.bind(orderController)
 );
 
+router.post(
+  "/export",
+  ...authMiddleware,
+  validateExportOrders(),
+  orderController.exportCsv.bind(orderController)
+);
+
 router.get(
   "/:id",
   ...authMiddleware,
@@ -65,6 +74,13 @@ router.post(
   ...authMiddleware,
   validateCreatePayment(),
   orderController.addPayment.bind(orderController)
+);
+
+router.post(
+  "/:id/refunds",
+  ...authMiddleware,
+  validateCreateRefund(),
+  orderController.addRefund.bind(orderController)
 );
 
 export default router;

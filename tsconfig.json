@@ -7,6 +7,7 @@
     "moduleResolution": "node16",
     "rootDir": "./src",
     "paths": {
+      "@/*": ["./src/*"],
       "@/config/*": ["./src/config/*"],
       "@/constants/*": ["./src/constants/*"],
       "@/controllers/*": ["./src/controllers/*"],

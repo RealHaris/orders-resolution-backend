@@ -4,6 +4,7 @@ import { body, header, param, query } from "express-validator";
 import { ORDER_CONSTANTS } from "@/constants/order.constants";
 import type { OrderStatus } from "@/data/orders/order.data";
 import { orderService } from "@/services/orders/order.service";
+import { sendExportFile } from "@/utils/export.utils";
 import { parsePaginationParams } from "@/utils/pagination.utils";
 import { validateExpressRequest } from "@/utils/validations/validation.utils";
 
@@ -128,6 +129,45 @@ export const validateCreatePayment = () => [
     .trim()
     .isLength({ min: 1, max: ORDER_CONSTANTS.IDEMPOTENCY_KEY_MAX_LENGTH }),
 ];
+
+/**
+ * Validation for POST /orders/:id/refunds.
+ */
+export const validateCreateRefund = () => [
+  ...validateOrderId(),
+  body("amount").exists().withMessage("Amount is required"),
+  body("date").isString().withMessage("date is required"),
+  body("note")
+    .optional()
+    .isString()
+    .isLength({ max: ORDER_CONSTANTS.MAX_NOTE_LENGTH }),
+  header("idempotency-key")
+    .optional()
+    .isString()
+    .trim()
+    .isLength({ min: 1, max: ORDER_CONSTANTS.IDEMPOTENCY_KEY_MAX_LENGTH }),
+];
+
+/**
+ * Validation for POST /orders/export.
+ */
+export const validateExportOrders = () => [
+  body("startDate").isString().withMessage("startDate is required"),
+  body("endDate").isString().withMessage("endDate is required"),
+  body("fileName")
+    .optional()
+    .isString()
+    .trim()
+    .isLength({ min: 1, max: ORDER_CONSTANTS.MAX_EXPORT_FILENAME_LENGTH }),
+];
+
+/**
+ * Reads an optional Idempotency-Key header.
+ */
+const readIdempotencyKey = (req: Request): string | undefined => {
+  const rawKey = req.headers["idempotency-key"];
+  return typeof rawKey === "string" ? rawKey.trim() || undefined : undefined;
+};
 
 /**
  * Controller for order endpoints.
@@ -257,19 +297,66 @@ class OrderController {
         date: string;
         note?: string;
       };
-      const rawKey = req.headers["idempotency-key"];
-      const idempotencyKey =
-        typeof rawKey === "string" ? rawKey.trim() || undefined : undefined;
       const result = await orderService.addPayment({
         orderId: req.params.id,
         userId,
         amount,
         date,
         note,
-        idempotencyKey,
+        idempotencyKey: readIdempotencyKey(req),
       });
       const statusCode = result.created ? 201 : 200;
       return res.status(statusCode).json({ success: true, data: result.order });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * POST /api/orders/:id/refunds
+   */
+  async addRefund(req: Request, res: Response, next: NextFunction) {
+    try {
+      validateExpressRequest(req);
+      const userId = req.payload.user._id.toString();
+      const { amount, date, note } = req.body as {
+        amount: number | string;
+        date: string;
+        note?: string;
+      };
+      const result = await orderService.addRefund({
+        orderId: req.params.id,
+        userId,
+        amount,
+        date,
+        note,
+        idempotencyKey: readIdempotencyKey(req),
+      });
+      const statusCode = result.created ? 201 : 200;
+      return res.status(statusCode).json({ success: true, data: result.order });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * POST /api/orders/export
+   */
+  async exportCsv(req: Request, res: Response, next: NextFunction) {
+    try {
+      validateExpressRequest(req);
+      const userId = req.payload.user._id.toString();
+      const { startDate, endDate, fileName } = req.body as {
+        startDate: string;
+        endDate: string;
+        fileName?: string;
+      };
+      const result = await orderService.exportCsv({
+        userId,
+        startDate,
+        endDate,
+      });
+      return sendExportFile(res, fileName || result.fileName, result.csv);
     } catch (error) {
       next(error);
     }

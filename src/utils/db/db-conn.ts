@@ -18,14 +18,21 @@ const getConnectionOptions = (): mongoose.ConnectOptions => ({
 /**
  * Opens the primary MongoDB connection.
  */
-export const connectToDB = () => {
+export const connectToDB = async () => {
   const mongoDB_URI = process.env.MONGODB_URI;
   if (!mongoDB_URI) {
     throw new Error("MONGODB_URI is not set");
   }
   const maskedMongoDbUri = maskConnectionStringCredentials(mongoDB_URI);
   logger.info({ mongoDbUri: maskedMongoDbUri }, "MongoDB connection string");
-  mongoose.connect(mongoDB_URI, getConnectionOptions());
+  await mongoose.connect(mongoDB_URI, getConnectionOptions());
+};
+
+/**
+ * Closes the primary MongoDB connection (used by tests).
+ */
+export const disconnectFromDB = async () => {
+  await mongoose.disconnect();
 };
 
 const db = mongoose.connection;
