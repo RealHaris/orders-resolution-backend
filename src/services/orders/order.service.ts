@@ -52,13 +52,11 @@ const notFound = () =>
 const mintAuditEvent = (input: {
   action: OrderAuditAction;
   actorUserId: string;
-  note?: string;
   metadata?: Record<string, unknown>;
 }): Omit<OrderAuditEvent, "fromStatus" | "toStatus"> => ({
   _id: new Types.ObjectId().toString(),
   action: input.action,
   actorUserId: input.actorUserId,
-  note: input.note,
   metadata: input.metadata,
   createdAt: new Date(),
 });
@@ -566,7 +564,6 @@ export class OrderService {
     const auditEvent = mintAuditEvent({
       action: "payment.recorded",
       actorUserId: input.userId,
-      note,
       metadata: { amount: centsToDollars(amountCents) },
     });
 
@@ -656,7 +653,6 @@ export class OrderService {
     const auditEvent = mintAuditEvent({
       action: "refund.recorded",
       actorUserId: input.userId,
-      note,
       metadata: { amount: centsToDollars(amountCents) },
     });
 

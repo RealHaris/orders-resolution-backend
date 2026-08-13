@@ -51,7 +51,6 @@ const auditEventSchema = new Schema(
       required: true,
     },
     actorUserId: { type: Schema.Types.ObjectId, required: true },
-    note: { type: String, trim: true },
     metadata: { type: Schema.Types.Mixed },
     createdAt: { type: Date, required: true },
   },

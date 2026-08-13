@@ -101,7 +101,6 @@ const concatAuditLog = (
             fromStatus: fromStatusExpr,
             toStatus: toStatusExpr,
             actorUserId: event.actorUserId,
-            note: event.note,
             metadata: event.metadata,
             createdAt: event.createdAt,
           },

@@ -33,7 +33,6 @@ export type OrderAuditEventResponse = {
   fromStatus?: OrderStatus;
   toStatus: OrderStatus;
   actorUserId: string;
-  note?: string;
   metadata?: Record<string, unknown>;
   createdAt: string;
 };
@@ -85,7 +84,6 @@ const mapAuditEvent = (event: OrderAuditEvent): OrderAuditEventResponse => ({
   fromStatus: event.fromStatus,
   toStatus: event.toStatus,
   actorUserId: event.actorUserId?.toString() ?? "",
-  note: event.note,
   metadata: event.metadata,
   createdAt: toIsoString(event.createdAt),
 });
