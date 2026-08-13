@@ -78,7 +78,7 @@ Other scripts: `npm test`, `npm run ci` (Biome + `tsc --noEmit` + Vitest), `npm 
 ### 2. Frontend (optional)
 
 ```bash
-cdorders-resolutions
+cd orders-resolutions
 ```
 
 Create `.env.local` with `NEXT_PUBLIC_API_HOST` (see [Environment variables](#environment-variables)).
@@ -216,30 +216,4 @@ Overdue can appear later just because the calendar moved. Audit logs derived sta
 - **Payments:** if a processor is added, refund against a charge id and keep this ledger as the AR sub-ledger.
 - **Indexes / Atlas:** review slow-query logs under real list filters; keep user-scoped indexes.
 - **Secrets:** rotate `JWT_SECRET_KEY` and Mongo credentials independently of this repo; never commit `.env`.
-- **Frontend deploy:** dashboard is at [https://my-frontend-flax.vercel.app](https://my-frontend-flax.vercel.app); keep `CORS_ORIGINS` and `NEXT_PUBLIC_API_HOST` in sync.
-
----
-
-## Submission email (copy/paste)
-
-**To:** *(reviewer)*  
-**From:** hariskhan.mywork@gmail.com  
-**Subject:** Orders & Settlements API — submission
-
-```
-Hi,
-
-Here is my Orders & Settlements app.
-
-Frontend: https://my-frontend-flax.vercel.app
-Backend API: https://orders-resolution-backend.onrender.com
-Health: https://orders-resolution-backend.onrender.com/api/health
-
-Repo:orders-resolution (API) andorders-resolutions (dashboard).
-README covers setup, endpoints, status rules, concurrency (atomic $expr, no distributed lock), tradeoffs, and production follow-ups.
-
-Contact: hariskhan.mywork@gmail.com
-
-Thanks,
-Haris
-```
+- **Frontend deploy:** keep `CORS_ORIGINS` and `NEXT_PUBLIC_API_HOST` in sync with the deployed UI origin.
